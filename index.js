@@ -31,48 +31,94 @@ this function returns either true or false
 const validateLineup = (array) => {
   // total salary of lineup guard clause, if the total salary of the players in a lineup
   // is more than 45000, the lineup is rejected
-  if (array.reduce((acc, player) => acc + player.salary, 0) > 45000) return false
-  let singleTeamCondition = false
+  if (array.reduce((acc, player) => {
+    return acc + player.salary
+  }, 0) > 45000) return false
+
+  let singleTeam = true
   let singleGame = true
   let playerPositions = false
 
-  // for (let index = 0; index < array.length; index++) {
-  //   let newArr = []
-
-  //   if (array[index].teamId === newArr.teamId) {
-  //     newArr.push(array[index])
-  //   }
-  // }
-  // compare team IDs, if each team is different change singleTeam to true
-  if (verifyTeamNumbers(array)) {
-    singleTeamCondition = false
+  if (verifySingleTeam(array)) {
+    singleTeam = false
   }
 
-  return singleTeamCondition
+  if (verifySingleGame(array)) {
+    singleGame = false
+  }
+
+  if (verifyPlayerPositions(array)) {
+    playerPositions = true
+  }
+
+  return singleTeam && singleGame && playerPositions
 }
 
 // this function returns true if a lineup has less than 3 players from
 // a single team
-const verifyTeamNumbers = (array) => {
+const verifySingleTeam = (array) => {
   let uniquePlayers = []
-  const allTeamIDs = array.map(onlyTeamIDs => onlyTeamIDs.teamId)
-
-  console.log(allTeamIDs)
+  let playerCount = true
+  const allTeamIDs = array.map((onlyTeamIDs) => {
+    return onlyTeamIDs.teamId
+  })
 
   // for each player in the array, if the array uniquePlayers does not include player.teamID
   // push player.teamid into uniquePlayers
   array.forEach(player => {
     if (!uniquePlayers.includes(player.teamId)) uniquePlayers.push(player.teamId)
   })
-  console.log(uniquePlayers) // [12, 22, 20, 18, 14, 27, 11, 15]
-  // at this point uniquePlayers is an array of non-duplicating teamIDs
-  // now count how many times those teamIDs occur in the array, if the count exceeds 2 for any teamID
-  // set correctNumberOfPlayers to false
-  // uniquePlayers.forEach(player => {
 
-  // })
+
+  uniquePlayers.forEach((team => {
+    // count how many times this team is in the all teamsID array
+    const numberOfPlayers = allTeamIDs.filter((teamID) => {
+      return teamID === team
+    }).length
+
+    // if the count from line 75 is greater than 2, set playerCount to false
+    if (numberOfPlayers > 2) {
+      playerCount = false
+    }
+  }))
+
+  return playerCount
 }
-// for testing
-// validateLineup(lineup)
 
+const verifySingleGame = (array) => {
+  let uniquePlayers = []
+  let playerCount = true
+  const allGameIDs = array.map((onlyGameIDs) => {
+    return onlyGameIDs.gameId
+  })
+
+  console.log(allGameIDs)// [12, 22, 12, 18, 14, 27, 11, 15, 12]
+
+  // for each player in the array, if the array uniquePlayers does not include player.gameId
+  // push player.gameId into uniquePlayers
+  array.forEach(player => {
+    if (!uniquePlayers.includes(player.gameId)) uniquePlayers.push(player.gameId)
+  })
+  console.log(uniquePlayers) // [12, 22, 18, 14, 27, 11, 15]
+
+
+  uniquePlayers.forEach((game => {
+    // count how many times this team is in the all gameID array
+    const numberOfPlayers = allGameIDs.filter((gameID) => {
+      return gameID === game
+    }).length
+
+    // if the count from line 107 is greater than 3, set playerCount to false
+    if (numberOfPlayers > 3) {
+      playerCount = false
+    }
+  }))
+
+  return playerCount
+}
+
+
+// // for testing
+// validateLineup(lineup)
+// verifyTeamNumbers(lineup)
 module.exports = validateLineup
