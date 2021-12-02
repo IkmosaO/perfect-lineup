@@ -92,16 +92,14 @@ const verifySingleGame = (array) => {
     return onlyGameIDs.gameId
   })
 
-  console.log(allGameIDs)// [12, 22, 12, 18, 14, 27, 11, 15, 12]
+  // console.log(allGameIDs)
 
   // for each player in the array, if the array uniquePlayers does not include player.gameId
   // push player.gameId into uniquePlayers
   array.forEach(player => {
     if (!uniquePlayers.includes(player.gameId)) uniquePlayers.push(player.gameId)
   })
-  console.log(uniquePlayers) // [12, 22, 18, 14, 27, 11, 15]
-
-
+  // console.log(uniquePlayers)
   uniquePlayers.forEach((game => {
     // count how many times this team is in the all gameID array
     const numberOfPlayers = allGameIDs.filter((gameID) => {
@@ -115,6 +113,18 @@ const verifySingleGame = (array) => {
   }))
 
   return playerCount
+}
+
+const verifyPlayerPositions = (array) => {
+  let arrayOF = []
+  
+  // inputs an array of objects
+  // counts how many 'OF' positions
+  // checks if the array contains 1 player w/ these positons
+  // 'P', 'C, '1B', '2B', '3B', 'SS'
+  // returns a true if conditions are all met
+
+
 }
 
 
