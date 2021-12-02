@@ -35,16 +35,16 @@ const validateLineup = (array) => {
     return acc + player.salary
   }, 0) > 45000) return false
 
-  let singleTeam = true
-  let singleGame = true
+  let singleTeam = false
+  let singleGame = false
   let playerPositions = false
 
   if (verifySingleTeam(array)) {
-    singleTeam = false
+    singleTeam = true
   }
 
   if (verifySingleGame(array)) {
-    singleGame = false
+    singleGame = true
   }
 
   if (verifyPlayerPositions(array)) {
@@ -117,21 +117,81 @@ const verifySingleGame = (array) => {
 
 const verifyPlayerPositions = (array) => {
   let arrayOF = []
-  let correctOFcount = false
+  let otherPositions = []
+  let correctOf = false
+  let correctOtherPositions = false
 
   // inputs an array of objects
-  // counts how many 'OF' positions, sets condition to true if it is
+  // counts how many 'OF' positions, sets condition to true if it is equal to 3
   array.forEach((player => {
     if (player.position === 'OF') {
       arrayOF.push(player)
-      console.log(player)
     }
-    if (player.length === 3) {
-      correctOFcount = true
+
+
+    // checks if each player has any of these positons:
+    // 'P', 'C, '1B', '2B', '3B', 'SS'
+    // if a position matches, they player is added to an array
+    // if the right number of positions are filled, set condition to true
+    switch (player.position) {
+      case 'P':
+        otherPositions.push(player.position)
+        break
+      case 'C':
+        otherPositions.push(player.position)
+        break
+      case '1B':
+        otherPositions.push(player.position)
+        break
+      case '2B':
+        otherPositions.push(player.position)
+        break
+      case '3B':
+        otherPositions.push(player.position)
+        break
+      case 'SS':
+        otherPositions.push(player.position)
+        break
+      default: // do nothing
     }
   }))
-  // checks if the array contains 1 player w/ these positons
-  // 'P', 'C, '1B', '2B', '3B', 'SS'
+
+  if (arrayOF.length === 3) {
+    correctOf = true
+  }
+  let otherPositionsUnique = otherPositions.reduce((acc, currentValue) => {
+    // return acc.includes(currentValue) ? acc : [...acc, currentValue]
+    if (!acc.includes(currentValue)) {
+      acc.push(currentValue)
+    }
+
+    return acc
+  }, [])
+
+
+  if (otherPositions.length === 6 && otherPositionsUnique.length === 6) {
+    correctOtherPositions = true
+  }
+  // console.log(arrayOF)
+  // console.log(otherPositions)
+  // console.log(otherPositionsUnique)
+  console.log(correctOtherPositions)
+  console.log(correctOf)
+
+  return correctOf && correctOtherPositions
+
+
+
+  // array.forEach((player) => {
+
+  // })
+
+  // if both conditions are true, the lineup rule has been followed, return true
+
+
+  // console.log(array.some((player) => {
+  //   player.position === 'P'
+  // }))
   // returns a true if conditions are all met
 }
 
