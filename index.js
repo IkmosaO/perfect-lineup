@@ -117,14 +117,22 @@ const verifySingleGame = (array) => {
 
 const verifyPlayerPositions = (array) => {
   let arrayOF = []
-  
+  let correctOFcount = false
+
   // inputs an array of objects
-  // counts how many 'OF' positions
+  // counts how many 'OF' positions, sets condition to true if it is
+  array.forEach((player => {
+    if (player.position === 'OF') {
+      arrayOF.push(player)
+      console.log(player)
+    }
+    if (player.length === 3) {
+      correctOFcount = true
+    }
+  }))
   // checks if the array contains 1 player w/ these positons
   // 'P', 'C, '1B', '2B', '3B', 'SS'
   // returns a true if conditions are all met
-
-
 }
 
 
